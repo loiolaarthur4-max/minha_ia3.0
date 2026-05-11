@@ -2,15 +2,21 @@ import streamlit as st
 import google.generativeai as genai
 import os
 
-# Pega a chave que você colocou na Vercel
+# Configuração da IA
 api_key = os.environ.get("GEMINI_API_KEY")
 genai.configure(api_key=api_key)
 
-st.title("🤖 IA do Pequeno Engenheiro")
+# Esse é o segredo: Criar uma função principal
+def main():
+    st.title("🤖 Minha IA Inventor")
+    
+    pergunta = st.text_input("O que vamos inventar hoje?")
+    
+    if pergunta:
+        model = genai.GenerativeModel('gemini-1.5-flash')
+        response = model.generate_content(pergunta)
+        st.write(response.text)
 
-prompt = st.text_input("Em que posso te ajudar hoje?")
-
-if prompt:
-    model = genai.GenerativeModel('gemini-1.5-flash')
-    response = model.generate_content(prompt)
-    st.write(response.text)
+# A Vercel precisa disso para saber por onde começar
+if __name__ == "__main__":
+    main()
